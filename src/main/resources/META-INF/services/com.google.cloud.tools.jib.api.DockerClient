@@ -1,1 +1,1 @@
-dockerclient.JavaDockerClient
+dockerclient.FallbackToJavaDockerClient
