@@ -12,7 +12,21 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * init class ASAP to fix "premature ejaculation"
+ * ServiceLoader.load(com.google.cloud.tools.jib.api.DockerClient)
+ * 
+ * <a href="https://github.com/GoogleContainerTools/jib/blob/9027c8dafb8ee12b9d37e1521caf62dfbcc3d374/jib-gradle-plugin/src/main/java/com/google/cloud/tools/jib/gradle/BuildDockerTask.java#L100">Bug here</a>
+ */
 public class FallbackToJavaDockerClient implements DockerClient {
+
+    private static final boolean DEFAULT_DOCKER_INSTALLED = CliDockerClient.isDefaultDockerInstalled();
+
+    static {
+        if (!DEFAULT_DOCKER_INSTALLED) {
+            System.setProperty("jib.dockerClient.executable", "/bin/true"); //fake docker binary to make jibDockerBuild task happy
+        }
+    }
 
     private DockerClient dockerClient;
 
@@ -52,4 +66,3 @@ public class FallbackToJavaDockerClient implements DockerClient {
     }
 
 }
-
