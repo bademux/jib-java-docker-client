@@ -59,7 +59,7 @@ public class FallbackToJavaDockerClient implements DockerClient {
     }
 
     public DockerClient getDockerClientOrFallbackToJava(Map<String, String> parameters) {
-        if (CliDockerClient.isDefaultDockerInstalled()) {
+        if (DEFAULT_DOCKER_INSTALLED) {
             return new CliDockerClient(CliDockerClient.DEFAULT_DOCKER_CLIENT, parameters);
         }
         return new JavaDockerClient();
